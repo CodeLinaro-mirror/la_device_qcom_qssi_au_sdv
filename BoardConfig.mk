@@ -16,7 +16,8 @@ AB_OTA_PARTITIONS := system system_ext product
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS := device/google/sdv/sdv_base/sepolicy/system_ext/private \
                                     device/google/sdv/sdv_core_base/sepolicy/system_ext/private \
                                     device/google/sdv/sdv_cf/sepolicy/system_ext/private \
-                                    device/google/sdv/sdv_base/vvmtruststore/sepolicy/vvmtruststore/private
+                                    device/google/sdv/sdv_base/vvmtruststore/sepolicy/vvmtruststore/private \
+                                    device/qcom/qssi_au_sdv/sepolicy/system_ext/private
 
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS :=  device/google/sdv/sdv_base/sepolicy/system_ext/public \
                                     device/google/sdv/sdv_core_base/sepolicy/system_ext/public
