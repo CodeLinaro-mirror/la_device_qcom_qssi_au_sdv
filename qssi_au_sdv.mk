@@ -24,6 +24,8 @@ include device/google/sdv/sdv_core_base/sdv_samples_all.mk
 #include device/google/sdv/sdv_core_base/sdv_samples_core_services.mk
 include device/qcom/qssi_au/qssi_au.mk
 
+TARGET_BOARD_DERIVATIVE_SUFFIX := _sdv
+
 # sdv_core_base adds update_engine_nonetd as the drop-in replacement for devices
 # without netd. Remove the standard update_engine to avoid a duplicate service
 # name ('update_engine') that causes host_init_verifier to fail.

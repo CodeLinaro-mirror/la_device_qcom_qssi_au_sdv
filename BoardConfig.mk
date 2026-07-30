@@ -1,4 +1,5 @@
 #include device/google/sdv/sdv_ivi_base/BoardConfig.mk
+TARGET_ARCH := arm64
 include device/google/sdv/sdv_core_base/BoardConfig.mk
 include device/qcom/qssi_au/BoardConfig.mk
 BOARD_AVB_VBMETA_SYSTEM :=
