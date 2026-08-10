@@ -34,9 +34,9 @@ BOARD_PRODUCT_SEPOLICY_DIRS += \
     packages/services/display_safety/service/product/sepolicy \
 # Allow HAR SDV Service Bundles to use sockets.
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += \
-    packages/services/display_safety/service/product/har_sdv_service_bundle_apex/lifecycle/sepolicy/public \
+    packages/services/display_safety/service/product/har_sdv_service_bundle_apex/lifecycle/sepolicy/public
 
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += \
-    packages/services/display_safety/service/product/har_sdv_service_bundle_apex/lifecycle/sepolicy \
+    packages/services/display_safety/service/product/har_sdv_service_bundle_apex/lifecycle/sepolicy
 
 $(call soong_config_set,sdv_authz,acl_provider_type,sdv_acl_provider)
