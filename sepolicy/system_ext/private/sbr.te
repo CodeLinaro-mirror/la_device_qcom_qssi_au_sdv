@@ -1,0 +1,6 @@
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+
+allow sdv_sbr cgroup:file { read open getattr };
+allow sdv_lc_default sdv_identity_verifier_service:service_manager { add find };
+allow sdv_update_manager_agent cgroup:file { read open getattr };
