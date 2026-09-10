@@ -1,0 +1,75 @@
+<!--
+Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+SPDX-License-Identifier: BSD-3-Clause-Clear
+-->
+<!-- Framework manifest for headless SDV RBVM builds (TARGET_SDV_ENABLED=true).
+     Declares the HALs required by the vintffm frozen-matrix check across all
+     frozen matrices (7.xml, 8.xml, 202404.xml, 202504.xml, 202604.xml).
+     These are normally provided by packages pulled in via aosp_base.mk and
+     car_generic_system.mk, which are excluded from SDV builds to avoid
+     building UI APKs (MusicFX, etc.) that are not needed on a headless device.
+     No services are built or run — this file only satisfies the build-time check. -->
+<manifest version="1.0" type="framework">
+    <!-- android.frameworks.stats: normally from statsd (base_system.mk) -->
+    <hal format="aidl">
+        <name>android.frameworks.stats</name>
+        <version>2</version>
+        <fqname>IStats/default</fqname>
+    </hal>
+    <!-- android.frameworks.location.altitude: normally from location service (base_system.mk) -->
+    <hal format="aidl">
+        <name>android.frameworks.location.altitude</name>
+        <version>2</version>
+        <fqname>IAltitudeService/default</fqname>
+    </hal>
+    <!-- android.hardware.media.c2: normally from mediaserver/swcodec (base_system.mk) -->
+    <hal format="hidl" max-level="8">
+        <name>android.hardware.media.c2</name>
+        <transport>hwbinder</transport>
+        <version>1.2</version>
+        <interface>
+            <name>IComponentStore</name>
+            <instance>software</instance>
+        </interface>
+    </hal>
+    <hal format="aidl">
+        <name>android.hardware.media.c2</name>
+        <version>2</version>
+        <fqname>IComponentStore/software</fqname>
+    </hal>
+    <!-- android.hidl.manager + android.hidl.token: normally from hwservicemanager (base_system.mk) -->
+    <hal max-level="8">
+        <name>android.hidl.manager</name>
+        <transport>hwbinder</transport>
+        <version>1.2</version>
+        <interface>
+            <name>IServiceManager</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal max-level="8">
+        <name>android.hidl.token</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ITokenManager</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <!-- android.frameworks.devicestate: normally from device state service (base_system.mk) -->
+    <hal format="aidl">
+        <name>android.frameworks.devicestate</name>
+        <fqname>IDeviceStateService/default</fqname>
+    </hal>
+    <!-- android.system.net.netd: normally from netd (base_system.mk) -->
+    <hal format="aidl">
+        <name>android.system.net.netd</name>
+        <fqname>INetd/default</fqname>
+    </hal>
+    <!-- android.system.suspend: normally from android.system.suspend-service (base_system.mk) -->
+    <hal format="aidl">
+        <name>android.system.suspend</name>
+        <version>1</version>
+        <fqname>ISystemSuspend/default</fqname>
+    </hal>
+</manifest>
