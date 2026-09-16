@@ -17,6 +17,11 @@ SDV_DIAGNOSTICS_AGENT_MODULE := sdv_diagnostics_agent
 PRODUCT_COPY_FILES += device/google/sdv/sdv_cf/ethernet/ethernet.sdv_cf.rc:$(TARGET_COPY_OUT_PRODUCT)/etc/init/hw/ethernet.sdv_cf.rc
 include device/google/sdv/sdv_core_base/sdv_core_base.mk
 -include device/google/sdv/sdv_core_base/sdv_core_arm64.mk
+PRODUCT_COPY_FILES += \
+    device/google/sdv/sdv_core_arm64/init.sdv_core_arm64.rc:system/etc/init/hw/init.sdv.rc \
+    device/google/sdv/sdv_core_arm64/ethernet/ethernet.sdv_arm64.rc:$(TARGET_COPY_OUT_PRODUCT)/etc/init/hw/ethernet.sdv_arm64.rc \
+    device/google/sdv/sdv_core_arm64/ethernet/ethernet.sdv_arm64.sh:$(TARGET_COPY_OUT_PRODUCT)/bin/ethernet/ethernet.sdv_arm64.sh
+
 include device/google/sdv/sdv_base/sdv_sample_ethernet_setup.mk
 #include device/google/sdv/sdv_base/vvmtruststore/vvmtruststore.mk
 include device/google/sdv/sdv_base/sdv_samples_base_services.mk
@@ -25,6 +30,8 @@ include device/google/sdv/sdv_core_base/sdv_samples_all.mk
 include device/qcom/qssi_au/qssi_au.mk
 
 TARGET_BOARD_DERIVATIVE_SUFFIX := _sdv
+
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += device/qcom/qssi_au_sdv/compatibility_matrix.xml
 
 # sdv_core_base adds update_engine_nonetd as the drop-in replacement for devices
 # without netd. Remove the standard update_engine to avoid a duplicate service
