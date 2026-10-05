@@ -83,7 +83,7 @@ APPS += TSCalibration
 
 #BRCTL
 BRCTL := brctl
-BRTCL += libbridge
+BRCTL += libbridge
 
 #BSON
 BSON := libbson
@@ -494,7 +494,7 @@ MM_CORE += libOmxCore
 
 #WFD
 MM_WFD := libwfdaac
-MM_WFD := libwfdaac_vendor
+MM_WFD += libwfdaac_vendor
 
 
 #MM_VIDEO

@@ -21,11 +21,14 @@ PRODUCT_COPY_FILES += \
     device/google/sdv/sdv_core_arm64/ethernet/ethernet.sdv_arm64.rc:$(TARGET_COPY_OUT_PRODUCT)/etc/init/hw/ethernet.sdv_arm64.rc \
     device/google/sdv/sdv_core_arm64/ethernet/ethernet.sdv_arm64.sh:$(TARGET_COPY_OUT_PRODUCT)/bin/ethernet/ethernet.sdv_arm64.sh
 
+# Include SDV sample makefiles only for non-production (userdebug/eng) builds.
+# These samples should NOT be included in user (production) builds.
+ifneq (,$(filter userdebug eng,$(TARGET_BUILD_VARIANT)))
 include device/google/sdv/sdv_base/sdv_sample_ethernet_setup.mk
-#include device/google/sdv/sdv_base/vvmtruststore/vvmtruststore.mk
 include device/google/sdv/sdv_base/sdv_samples_base_services.mk
 include device/google/sdv/sdv_core_base/sdv_samples_all.mk
-#include device/google/sdv/sdv_core_base/sdv_samples_core_services.mk
+endif
+
 # Inlined from device/qcom/qssi_au/qssi_au.mk
 #For QSSI, we build only the system image. Here we explicitly set the images
 #we build so there is no confusion.
@@ -263,8 +266,6 @@ PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
 PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 
-PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE:=true
-
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
 TARGET_USES_MKE2FS := true
@@ -338,24 +339,23 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += device/qcom/qssi_au_sdv/compatibil
 PRODUCT_PACKAGES := $(filter-out update_engine,$(PRODUCT_PACKAGES))
 
 PRODUCT_PACKAGES += \
-    com.sdv.google.display_safety.services_bundle.apex \
+    com.sdv.google.display_safety.services_bundle.apex
 
 # Add tools/utils
 PRODUCT_PACKAGES += \
-        harry_rpc_client \
+    harry_rpc_client
 
 TARGET_FS_CONFIG_GEN += device/google/sdv/sdv_core_base/config.fs
 
 PRODUCT_PACKAGES += \
-                 dice_handover_instance1 \
-                 dice_handover_instance2 \
-                 dice_handover_instance3 \
-
+    dice_handover_instance1 \
+    dice_handover_instance2 \
+    dice_handover_instance3
 
 PRODUCT_COPY_FILES += device/google/sdv/sdv_base/vvmtruststore/vvmtruststore.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/vvmtruststore.rc
 
 PRODUCT_PACKAGES += \
-                 android.sdv.hardware.security.keymint-service.nonsecure \
+    android.sdv.hardware.security.keymint-service.nonsecure
 
 PRODUCT_PROPERTY_OVERRIDES  += \
      ro.boot.sdv.instance_name=instance1 \
@@ -366,9 +366,8 @@ PRODUCT_PACKAGES += android.hidl.allocator@1.0-service
 PRODUCT_PROPERTY_OVERRIDES += hwservicemanager.disabled=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
-ro.boot.sdv.vvmfactorytrust=c779a73d0595a6814ba0414a419e99ad4026ad0feb603f2ad80ee6a9e4d1adb7 \
-ro.sdv.ethernet.ready=true \
-#ro.vendor.sdv.rpc.network.ready=true \
+    ro.boot.sdv.vvmfactorytrust=c779a73d0595a6814ba0414a419e99ad4026ad0feb603f2ad80ee6a9e4d1adb7 \
+    ro.sdv.ethernet.ready=true
 
 PRODUCT_PACKAGES += init_open_dice
 

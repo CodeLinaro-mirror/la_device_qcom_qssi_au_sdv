@@ -6,7 +6,6 @@ include device/google/sdv/sdv_core_base/BoardConfig.mk
 # Product-specific compile-time definitions.
 #
 
-TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a-branchprot
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
@@ -191,7 +190,8 @@ PRODUCT_PUBLIC_SEPOLICY_DIRS :=     device/google/sdv/sdv_base/sepolicy/product/
                                     device/qcom/sepolicy/generic/product/public
 
 BOARD_PRODUCT_SEPOLICY_DIRS += \
-    packages/services/display_safety/service/product/sepolicy \
+    packages/services/display_safety/service/product/sepolicy
+
 # Allow HAR SDV Service Bundles to use sockets.
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += \
     packages/services/display_safety/service/product/har_sdv_service_bundle_apex/lifecycle/sepolicy/public
