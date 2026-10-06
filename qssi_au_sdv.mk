@@ -345,6 +345,29 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     harry_rpc_client
 
+# QSSI standalone no longer inherits base_system.mk (previously pulled in
+# transitively via device/qcom/qssi_au/qssi_au.mk). Without this package the
+# system image is missing /system/bin/sh, toybox and /system/etc/mkshrc, so
+# 'adb shell' lands on a bare "$" with no PATH tools.
+PRODUCT_PACKAGES += shell_and_utilities_system
+
+# When QSSI's standalone /system and /product are merged over a vendor
+# build (e.g. gen4_gvm_sdv), Android init resolves the unqualified
+# ro.product.{brand,device,manufacturer,model,name} by walking
+# ro.product.property_source_order. The AOSP default order is
+# "product,odm,vendor,system_ext,system" (see
+# system/core/init/property_service.cpp), which makes QSSI's own
+# ro.product.product.device=qssi_au_sdv win over the vendor's
+# ro.product.vendor.device=gen4_gvm_sdv. That causes adb shell / HOSTNAME
+# / getprop ro.product.device to report the QSSI blueprint name instead
+# of the physical vendor target. Put vendor first so the vendor-owned
+# board identity wins on merged flashes, while a true QSSI-only boot
+# (no /vendor present) still correctly falls through to qssi_au_sdv.
+# This was getting updated earlier by device/qcom/qssi_au/system.prop file
+
+PRODUCT_SYSTEM_PROPERTIES += \
+    ro.product.property_source_order=odm,vendor,product,system_ext,system
+
 TARGET_FS_CONFIG_GEN += device/google/sdv/sdv_core_base/config.fs
 
 PRODUCT_PACKAGES += \
