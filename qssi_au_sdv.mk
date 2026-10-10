@@ -395,22 +395,3 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += init_open_dice
 
 include device/google/sdv/sdv_base/sepolicy/samples/device_sepolicy.mk
-
-# Filter out UI packages that are added unconditionally by makefiles included
-# via device-vendor-qssi.mk or audio configs, which cannot be individually guarded:
-#   - FrameworksResAutoCommon_Sys, SystemUIResAutoCommon_Sys, WifiResAutoCommon_Sys,
-#     DewdSplitViewQcomRRO, DewdThreePanelQcomRRO: automotive resource overlays from
-#     commonsys/resource-overlay/overlay.mk (included when TARGET_BOARD_AUTO=true)
-#   - AudioSettings: audio settings UI app added to PRODUCT_PACKAGES_DEBUG via
-#     commonsys/audio/configs/qssi/qssi.mk
-#
-
-PRODUCT_PACKAGES := $(filter-out \
-    FrameworksResAutoCommon_Sys \
-    SystemUIResAutoCommon_Sys \
-    WifiResAutoCommon_Sys \
-    DewdSplitViewQcomRRO \
-    DewdThreePanelQcomRRO \
-    ,$(PRODUCT_PACKAGES))
-PRODUCT_PACKAGES_DEBUG := $(filter-out AudioSettings,$(PRODUCT_PACKAGES_DEBUG))
-
