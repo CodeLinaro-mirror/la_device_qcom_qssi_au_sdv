@@ -117,13 +117,7 @@ endif
 
 PRODUCT_PRODUCT_PROPERTIES += \
     remote_provisioning.enable_rkpd=true \
-    remote_provisioning.hostname=remoteprovisioning.googleapis.com \
-
-PRODUCT_SOONG_NAMESPACES += \
-    frameworks/base/boot \
-    cts/tests/signature/api-check \
-    hardware/google/av \
-    hardware/google/interfaces
+    remote_provisioning.hostname=remoteprovisioning.googleapis.com
 
 VENDOR_QTI_PLATFORM := qssi_au_sdv
 VENDOR_QTI_DEVICE := qssi_au_sdv
@@ -154,32 +148,9 @@ TARGET_USES_RRO := true
 PRODUCT_CHARACTERISTICS := nosdcard
 BOARD_FRP_PARTITION_NAME := frp
 
-#Android EGL implementation
-PRODUCT_PACKAGES += libGLES_android
-
 PRODUCT_PACKAGES_DEBUG += avbctl
 
-ifneq ($(TARGET_NO_TELEPHONY), true)
-PRODUCT_BOOT_JARS += telephony-ext
-PRODUCT_PACKAGES += telephony-ext
-endif
-
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
-
-TARGET_DISABLE_DASH := true
-TARGET_DISABLE_QTI_VPP := true
-
-ifneq ($(TARGET_DISABLE_DASH), true)
-    PRODUCT_BOOT_JARS += qcmediaplayer
-endif
-
-PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
-
-# Audio configuration file
--include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/qssi/qssi.mk
--include $(TOPDIR)vendor/qcom/opensource/commonsys/audio/configs/qssi/qssi.mk
-AUDIO_FEATURE_ENABLED_SVA_MULTI_STAGE := true
-USE_LIB_PROCESS_GROUP := true
 
 PRODUCT_PACKAGES += fs_config_files
 
@@ -187,73 +158,16 @@ ifeq ($(ENABLE_AB), true)
 #A/B related packages
 PRODUCT_PACKAGES += update_engine \
     update_engine_client \
-    update_verifier \
-    bootctrl.msmnile \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service
-
-PRODUCT_HOST_PACKAGES += \
-    brillo_update_payload
+    update_verifier
 
 #Boot control HAL test app
 PRODUCT_PACKAGES_DEBUG += bootctl
 endif
 
-#Healthd packages
-PRODUCT_PACKAGES += \
-    android.hardware.health@1.0-impl \
-    android.hardware.health@1.0-convert \
-    android.hardware.health@1.0-service \
-    libhealthd.msm
-
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/qssi_au_sdv/framework_manifest.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := vendor/qcom/opensource/core-utils/vendor_framework_compatibility_matrix.xml
 
 PRODUCT_PRODUCT_PROPERTIES += persist.adb.tcp.port=5555
-
-#audio related module
-PRODUCT_PACKAGES += libvolumelistener
-
-# Display/Graphics
-PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.0-service \
-    android.hardware.broadcastradio@1.0-impl
-
-# Camera configuration file. Shared by passthrough/binderized camera HAL
-PRODUCT_PACKAGES += camera.device@3.2-impl
-PRODUCT_PACKAGES += camera.device@1.0-impl
-PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
-# Enable binderized camera HAL
-PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
-
-# Ethernet configuration file
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml
-
-# Context hub HAL
-PRODUCT_PACKAGES += \
-    android.hardware.contexthub@1.0-impl.generic \
-    android.hardware.contexthub@1.0-service
-
-
-PRODUCT_SYSTEM_PROPERTIES += ro.android.car.audio.enableaudiopatch=true
-
-
-# Disable RTT (Real-Time Text) feature
-PRODUCT_SYSTEM_PROPERTIES += config.disable_rtt=true
-
-# Enable WFD debug property
-PRODUCT_SYSTEM_PROPERTIES += persist.debug.wfd.enable=1
-
-# USB default HAL
-PRODUCT_PACKAGES += \
-    android.hardware.usb@1.0-service
-
-#PASR HAL and APP
-PRODUCT_PACKAGES += \
-    vendor.qti.power.pasrmanager@1.0-service \
-    vendor.qti.power.pasrmanager@1.0-impl \
-    pasrservice
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
@@ -264,15 +178,10 @@ PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
-PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
 TARGET_USES_MKE2FS := true
-
-PRODUCT_PROPERTY_OVERRIDES += \
-ro.crypto.volume.filenames_mode = "aes-256-cts" \
-ro.crypto.allow_encrypt_override = true
 
 TARGET_USES_QCOM_DISPLAY_BSP := true
 
@@ -292,13 +201,6 @@ ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
   PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := false
 endif
 
-PRODUCT_PACKAGES += vendor.qti.qesdsys
-
-#Add soong variable to enable gpp extension!
-$(call add_soong_config_var,video_extensions,enable_gpp_extensions)
-ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS),true)
-$(call soong_config_set,video_extensions,enable_gpp_extensions,true)
-endif
 
 # Enable support for APEX updates
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
@@ -325,11 +227,6 @@ $(call inherit-product-if-exists, vendor/qcom/defs/product-defs/system/qseecom_l
 $(call inherit-product-if-exists, vendor/qcom/defs/product-defs/system/securemsm_product.mk)
 $(call inherit-product-if-exists, vendor/qcom/defs/product-defs/system/smcinvoke_system_product.mk)
 # ###################################################################################
-
-# Enable Car Telemetry
-ENABLE_CARTELEMETRY_SERVICE := true
-PRODUCT_PACKAGES += android.automotive.telemetryd@1.0
-
 
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += device/qcom/qssi_au_sdv/compatibility_matrix.xml
 
@@ -380,13 +277,11 @@ PRODUCT_COPY_FILES += device/google/sdv/sdv_base/vvmtruststore/vvmtruststore.rc:
 PRODUCT_PACKAGES += \
     android.sdv.hardware.security.keymint-service.nonsecure
 
-PRODUCT_PROPERTY_OVERRIDES  += \
+PRODUCT_PROPERTY_OVERRIDES += \
      ro.boot.sdv.instance_name=instance1 \
      ro.boot.sdv.boot_mode=unlocked
 
 PRODUCT_PACKAGES += android.hidl.allocator@1.0-service
-
-PRODUCT_PROPERTY_OVERRIDES += hwservicemanager.disabled=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.boot.sdv.vvmfactorytrust=c779a73d0595a6814ba0414a419e99ad4026ad0feb603f2ad80ee6a9e4d1adb7 \

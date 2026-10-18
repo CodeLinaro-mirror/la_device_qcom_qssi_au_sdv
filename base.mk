@@ -100,7 +100,7 @@ CIMAX := libcimax_spi
 
 ifneq ($(TARGET_HAS_LOW_RAM),true)
 #CM
-CM :=CMFileManager
+CM := CMFileManager
 #CM += Trebuchet
 endif
 
@@ -659,7 +659,6 @@ PRODUCT_PACKAGES += $(LIBMEMTRACK)
 PRODUCT_PACKAGES += $(LIBOVERLAY)
 PRODUCT_PACKAGES += $(MEDIA_PROFILES)
 PRODUCT_PACKAGES += $(MM_VIDEO)
-PRODUCT_PACKAGES += $(UPDATER)
 
 PRODUCT_PACKAGES += librs_jni
 PRODUCT_PACKAGES += libion
@@ -688,23 +687,6 @@ endif
 
 # include additional build utilities
 -include vendor/qcom/opensource/core-utils/build/utils.mk
-# Set up flags to determine the kernel version
-ifeq ($(TARGET_KERNEL_VERSION),)
-     TARGET_KERNEL_VERSION := 3.18
-endif
-ifneq ($(KERNEL_OVERRIDE),)
-     TARGET_KERNEL_VERSION := $(KERNEL_OVERRIDE)
-endif
-ifeq ($(wildcard kernel/msm-$(TARGET_KERNEL_VERSION)),)
-     KERNEL_TO_BUILD_ROOT_OFFSET := ../
-     TARGET_KERNEL_SOURCE := kernel
-else
-     KERNEL_TO_BUILD_ROOT_OFFSET := ../../
-     TARGET_KERNEL_SOURCE := kernel/msm-$(TARGET_KERNEL_VERSION)
-endif
-
-#Enabling video for live effects
--include frameworks/base/data/videos/VideoPackage1.mk
 
 # dm-verity definitions
 ifneq ($(BOARD_AVB_ENABLE), true)
@@ -715,34 +697,9 @@ ifneq ($(BOARD_AVB_ENABLE), true)
    $(call inherit-product, build/target/product/verity.mk)
 endif
 
-# OEM Unlock reporting
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    ro.oem_unlock_supported=1
-
-
-ifeq ($(TARGET_HAS_LOW_RAM),true)
-    PRODUCT_PROPERTY_OVERRIDES += \
-        persist.vendor.qcomsysd.enabled=0
-else
-    PRODUCT_PROPERTY_OVERRIDES += \
-        persist.vendor.qcomsysd.enabled=1
-endif
-
-PRODUCT_PACKAGES += liboemaids_system
-PRODUCT_PACKAGES += liboemaids_vendor
-
 #soong namespace for qssi vs vendor differentiation
 $(call soong_config_set,qssi_vs_vendor,qssi_or_vendor,qssi)
 
 # soong namespace for aosp vs qva differentiation
 $(call soong_config_set,aosp_vs_qva,aosp_or_qva,$(if $(TARGET_FWK_SUPPORTS_FULL_VALUEADDS),qva,aosp))
 
-# soong namespace for bredr vs btadva differentiation
-ifneq ($(wildcard vendor/qcom/proprietary/commonsys/bt/bt_adv_audio),)
-    $(warning bt_adv_audio dir is present)
-    $(call soong_config_set,bredr_vs_btadva,bredr_or_btadva,btadva)
-else
-    $(warning bt_adv_audio dir is not present)
-    $(call soong_config_set,bredr_vs_btadva,bredr_or_btadva,bredr)
-
-endif #ifneq "$(wildcard vendor/qcom/proprietary/commonsys/bt/bt_adv_audio)" ""
